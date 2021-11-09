@@ -14,4 +14,7 @@ docs:
 	docker-compose run --rm terraform-docs terraform-docs-replace-012 md README.md
 
 diagram:
-	docker-compose run --rm python python /app/diagrams/diagram.py
+	docker-compose run --rm python python /app/scripts/diagram.py
+
+uuid:
+	docker-compose run --rm python python /app/scripts/generate-uuid.py

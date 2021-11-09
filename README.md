@@ -86,6 +86,95 @@ It is anticipated that SCP's could conflict or block the baseline configuration 
 6. Execute `make apply` to move the new Member Account to its designated parent OU.
 
 
+## Input Variables
+
+> Certain Variables require uuid values as its possible to have multiple OU's with the same name.
+> Generate them with the `make uuid` command
+
+### Service Control Policies
+
+```terraform
+service_control_policies = [
+  {
+    name        = "example"
+    description = "Example Description"
+    policy      = data.aws_iam_policy_document.example.json
+  }
+]
+```
+
+### Top Level Organizational Units
+
+```terraform
+top_level_org_units = [
+  {
+    name          = "harrison"
+    uuid          = "a4856923-00f2-a13e-9148-1238136a082c"
+    attached_scps = ["example"]
+  }
+]
+```
+
+### Child Organization Units
+
+```terraform
+child_org_units = [
+  {
+    name = "sandpit"
+    uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b7"
+    attached_scps = []
+    parent = {
+      name = "harrison"
+      uuid = "a4856923-00f2-a13e-9148-1238136a082c"
+    }
+  }
+]
+```
+
+Please Note:
+parent.name is the name of the parent OU
+parent.uuid is the uuid value of the parent OU
+
+
+### Member Accounts
+
+```terraform
+accounts = [
+  {
+    name    = "network"
+    email   = "aws.etwork@harrison.ai"
+    billing = "ALLOW"
+    parent  = {
+      name  = null
+      uuid  = null
+    }
+  }
+]
+```
+
+YAML format if provided as individual YAML files:
+
+```yaml
+name: network
+email: aws.etwork@harrison.ai
+iam_user_access_to_billing: ALLOW
+parent:
+  name: harrison
+  uuid: 5d41dd0c-561a-eab4-ad53-4da7753a89b7
+```
+
+example with no parent.  I.E at Organization root
+
+```yaml
+name: network
+email: aws.etwork@harrison.ai
+iam_user_access_to_billing: ALLOW
+parent:
+  name: ~
+  uuid: ~
+```
+
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
