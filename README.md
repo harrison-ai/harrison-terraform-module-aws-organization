@@ -41,14 +41,14 @@ This module supports the creation of up to two levels of Organizational Units be
 - `top_level_org_units`
 - `child_org_units`
 
-(Diagram here)
-
 
 ## Service Control Policies (SCP's)
 
 This module supports the creation and attachment of any number of SCP's, attached to any Organizational Unit.  SCP policy documents should be supplied as `aws_iam_policy_document` Data Sources.  These will be provided to this module as an attribute of the `service_control_policies` Input Variable.  The SCP's can be attached to any OU by providing the OU name/uuid.
 
-(Diagram here)
+## Example Diagram
+
+![AWS Org](aws-org.png)
 
 ## Procedure
 

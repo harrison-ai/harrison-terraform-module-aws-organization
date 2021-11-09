@@ -13,3 +13,11 @@ services:
     volumes:
       - '.:/app'
     working_dir: '/app'
+
+  python:
+    build:
+      context: .
+    volumes:
+      - '~/.aws:/root/.aws'
+      - '.:/app'
+    working_dir: '/app'
