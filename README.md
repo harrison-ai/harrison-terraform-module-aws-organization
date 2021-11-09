@@ -120,8 +120,8 @@ top_level_org_units = [
 ```terraform
 child_org_units = [
   {
-    name = "sandpit"
-    uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b7"
+    name          = "sandpit"
+    uuid          = "5d41dd0c-561a-eab4-ad53-4da7753a89b7"
     attached_scps = []
     parent = {
       name = "harrison"
@@ -156,7 +156,7 @@ YAML format if provided as individual YAML files:
 
 ```yaml
 name: network
-email: aws.etwork@harrison.ai
+email: aws.network@harrison.ai
 iam_user_access_to_billing: ALLOW
 parent:
   name: harrison
@@ -167,7 +167,7 @@ example with no parent.  I.E at Organization root
 
 ```yaml
 name: network
-email: aws.etwork@harrison.ai
+email: aws.network@harrison.ai
 iam_user_access_to_billing: ALLOW
 parent:
   name: ~
