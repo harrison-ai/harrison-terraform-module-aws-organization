@@ -89,7 +89,7 @@ resource "aws_cloudtrail" "this" {
 
   event_selector {
     include_management_events = true
-    read_write_type               = "All"
+    read_write_type           = "All"
     data_resource {
       type   = "AWS::S3::Object"
       values = ["arn:aws:s3:::"]
