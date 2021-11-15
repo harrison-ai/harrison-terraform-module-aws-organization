@@ -11,7 +11,7 @@ pull:
 	docker-compose pull
 
 docs:
-	@for module in $(shell find modules -maxdepth 1 -mindepth 1 -type d); do \
+	for module in $(shell find modules -maxdepth 1 -mindepth 1 -type d); do \
 		docker-compose run --rm --workdir /app/$$module terraform-docs terraform-docs-replace-012 md README.md ; \
 	done
 
