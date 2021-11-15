@@ -9,7 +9,7 @@ variable "enabled_policy_types" {
 }
 
 variable "accounts" {
-  type        = list(any)
+  type        = map(any)
   description = "List of member accounts to be added to the organization"
 }
 

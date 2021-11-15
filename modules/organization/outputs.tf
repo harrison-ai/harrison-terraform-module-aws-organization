@@ -1,7 +1,3 @@
-# output "org_units" {
-#   value = local.org_units
-# }
-#
-# output "scp_attachments" {
-#   value = local.scp_attachments
-# }
+output "member_accounts" {
+  value = { for k, v in aws_organizations_account.this : k => v.id }
+}

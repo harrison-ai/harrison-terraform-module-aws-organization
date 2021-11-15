@@ -208,7 +208,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | `list(any)` | n/a | yes |
+| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | `map(any)` | n/a | yes |
 | <a name="input_aws_service_access_principals"></a> [aws\_service\_access\_principals](#input\_aws\_service\_access\_principals) | ist of AWS service principal names for which you want to enable integration with your organization | `list(any)` | n/a | yes |
 | <a name="input_child_org_units"></a> [child\_org\_units](#input\_child\_org\_units) | List of Organizational Units to be created directly under a Top Level Org Unit | `list(any)` | `[]` | no |
 | <a name="input_enabled_policy_types"></a> [enabled\_policy\_types](#input\_enabled\_policy\_types) | List of Organizations policy types to enable in the Organization Root | `list(any)` | n/a | yes |
@@ -217,6 +217,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_member_accounts"></a> [member\_accounts](#output\_member\_accounts) | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
