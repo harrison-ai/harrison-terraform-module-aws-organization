@@ -1,4 +1,4 @@
-variable "audit_account_id" {
+variable "account_id" {
   type        = string
   description = "12 digit Account Id of the designated Audit account"
 }

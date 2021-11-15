@@ -14,7 +14,7 @@ provider "aws" {
   alias = "audit"
 
   assume_role {
-    role_arn = "arn:aws:iam::${var.audit_account_id}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::${var.account_id}:role/OrganizationAccountAccessRole"
   }
 
   default_tags {
