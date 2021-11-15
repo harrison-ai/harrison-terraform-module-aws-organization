@@ -48,7 +48,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_audit_account_id"></a> [audit\_account\_id](#input\_audit\_account\_id) | 12 digit Account Id of the designated Audit account | `string` | n/a | yes |
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | 12 digit Account Id of the designated Audit account | `string` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the S3 Bucket that will store CloudTrail logs | `string` | n/a | yes |
 | <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | Name of the Org CloudTrail | `string` | n/a | yes |
 | <a name="input_expiration_days"></a> [expiration\_days](#input\_expiration\_days) | Number of days before CloudTrail logs are expired (delete) | `number` | `2555` | no |
