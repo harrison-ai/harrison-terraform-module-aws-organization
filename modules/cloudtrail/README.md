@@ -52,6 +52,8 @@ No modules.
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the S3 Bucket that will store CloudTrail logs | `string` | n/a | yes |
 | <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | Name of the Org CloudTrail | `string` | n/a | yes |
 | <a name="input_expiration_days"></a> [expiration\_days](#input\_expiration\_days) | Number of days before CloudTrail logs are expired (delete) | `number` | `2555` | no |
+| <a name="input_project"></a> [project](#input\_project) | Designated project name | `string` | n/a | yes |
+| <a name="input_repo"></a> [repo](#input\_repo) | Name of this current repository | `string` | n/a | yes |
 | <a name="input_transition_to_ia_days"></a> [transition\_to\_ia\_days](#input\_transition\_to\_ia\_days) | Number of days before CloudTrail logs are transitioned from STANDARD to IA | `number` | `90` | no |
 
 ## Outputs
