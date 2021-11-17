@@ -1,8 +1,0 @@
-account-one:
-  email: aws.account_one@example.com
-  iam_user_access_to_billing: ALLOW
-  enable_budget: true
-  budget_limit_amount: 250
-  parent:
-    name: ou-one-child-one
-    uuid: 5d41dd0c-561a-eab4-ad53-4da7753a89b7

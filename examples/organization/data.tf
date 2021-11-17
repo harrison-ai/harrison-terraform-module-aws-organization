@@ -1,11 +1,5 @@
 data "aws_iam_policy_document" "block_root_user" {
   statement {
-    sid       = "AllowAll"
-    effect    = "Allow"
-    actions   = ["*"]
-    resources = ["*"]
-  }
-  statement {
     sid       = "BlockRootUser"
     effect    = "Deny"
     actions   = ["*"]
@@ -41,22 +35,13 @@ data "aws_iam_policy_document" "block_leave_organization" {
   }
 }
 
-data "aws_iam_policy_document" "block_s3_account_public_block" {
+data "aws_iam_policy_document" "protect_security_settings" {
   statement {
     effect = "Deny"
     actions = [
-      "s3:PutAccountPublicAccessBlock"
-    ]
-    resources = ["*"]
-  }
-}
-
-
-data "aws_iam_policy_document" "block_disable_ebs_encryption" {
-  statement {
-    effect = "Deny"
-    actions = [
-      "ec2:DisableEbsEncryptionByDefault"
+      "access-analyzer:DeleteAnalyzer",
+      "ec2:DisableEbsEncryptionByDefault",
+      "s3:PutAccountPublicAccessBlock",
     ]
     resources = ["*"]
   }
@@ -110,6 +95,48 @@ data "aws_iam_policy_document" "restrict_current_region" {
       test     = "StringNotEquals"
       variable = "aws:RequestedRegion"
       values   = local.allowed_regions
+    }
+  }
+}
+
+data "aws_iam_policy_document" "deny_internet_access" {
+  statement {
+    effect = "Deny"
+    actions = [
+      "ec2:AttachInternetGateway",
+      "ec2:CreateInternetGateway",
+      "ec2:CreateEgressOnlyInternetGateway",
+      "ec2:CreateVpcPeeringConnection",
+      "ec2:AcceptVpcPeeringConnection",
+      "globalaccelerator:Create*",
+      "globalaccelerator:Update*"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "deny_create_vpc" {
+  statement {
+    effect = "Deny"
+    actions = [
+      "ec2:CreateDefaultVpc",
+      "ec2:CreateTransitGatewayVpcAttachment",
+      "ec2:CreateVpc",
+      "ec2:CreateVpcEndpoint",
+      "ec2:CreateVpcEndpointConnectionNotification",
+      "ec2:CreateVpcEndpointServiceConfiguration",
+      "ec2:CreateVpcPeeringConnection"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
     }
   }
 }

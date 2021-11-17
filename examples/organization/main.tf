@@ -14,6 +14,7 @@ module "org" {
 module "cloudtrail" {
   source = "../../modules/cloudtrail"
 
+  # s3 bucket account - fixme
   account_id      = module.harrison.member_accounts["sch-testorg-audit"]
   cloudtrail_name = "${local.organization}-cloudtrail"
   bucket_name     = "${local.organization}-cloudtrail"

@@ -1,9 +1,9 @@
 resource "aws_ssoadmin_permission_set" "this" {
   for_each = { for permission in var.permission_sets : permission.name => permission }
 
-  name         = each.value.name
-  description  = each.value.description
-  instance_arn = local.sso_instance_arn
+  name             = each.value.name
+  description      = each.value.description
+  instance_arn     = local.sso_instance_arn
   session_duration = "PT12H"
 }
 

@@ -7,17 +7,21 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
+    external = {
+      source  = "hashicorp/external"
+      version = "~> 2.1"
+    }
   }
 }
 
 provider "aws" {
-  region  = local.region
-  profile = local.profile
+  region  = var.region
+  profile = var.profile
 
   default_tags {
     tags = {
-      Project = local.project
-      Repo    = local.repo
+      Project = var.project
+      Repo    = var.repo
     }
   }
 }
