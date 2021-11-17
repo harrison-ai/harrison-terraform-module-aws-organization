@@ -1,31 +1,39 @@
 variable "name" {
-  type = string
+  type        = string
+  description = "Member Account Name"
 }
 
 variable "profile" {
-  type = string
+  type        = string
+  description = "AWS Shared Credentials Profile"
 }
 
 variable "region" {
-  type = string
+  type        = string
+  description = "AWS Region"
 }
 
 variable "project" {
-  type = string
+  type        = string
+  description = "Designated project name"
 }
 
 variable "repo" {
-  type = string
+  type        = string
+  description = "Name of this current repository"
 }
 
 variable "accounts" {
-  type = map(any)
+  type        = list(any)
+  description = "List of Organization Member Accounts"
 }
 
 variable "account_ids" {
-  type = map(any)
+  type        = map(any)
+  description = "Map of Organization Member Account ID's"
 }
 
 variable "central_budget_nofication" {
-  type = string
+  type        = string
+  description = "Central or Shared email address for Budget Notifications"
 }

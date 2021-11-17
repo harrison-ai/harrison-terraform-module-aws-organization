@@ -1,6 +1,12 @@
-locals {
-  account    = [for a in var.accounts : a if a.name == var.name][0]
-  account_id = var.account_ids[var.name]
+##  -----  Password Policy  -----  ##
+resource "aws_iam_account_password_policy" "default" {
+
+  minimum_password_length        = 20
+  require_lowercase_characters   = true
+  require_numbers                = true
+  require_uppercase_characters   = true
+  require_symbols                = true
+  allow_users_to_change_password = true
 }
 
 
@@ -21,6 +27,7 @@ resource "aws_ebs_encryption_by_default" "this" {
 }
 
 
+##  -----  Budget  -----  ##
 resource "aws_budgets_budget" "this" {
   count = local.account.enable_budget ? 1 : 0
 
@@ -61,5 +68,14 @@ resource "aws_budgets_budget" "this" {
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
     subscriber_email_addresses = [local.account.email, var.central_budget_nofication]
+  }
+}
+
+
+##  -----  Delete the default VPC  -----  ##
+data "external" "delete_default_vpc" {
+  program = ["python", "${path.module}/delete-default-vpc.py"]
+  query = {
+    account_id = local.account_id
   }
 }
