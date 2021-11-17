@@ -2,7 +2,8 @@ version: '3.7'
 services:
 
   terraform:
-    image: hashicorp/terraform:1.0.10
+    build:
+        context: .
     volumes:
       - '~/.aws:/root/.aws'
       - '.:/app'
@@ -11,13 +12,5 @@ services:
   terraform-docs:
     image: cytopia/terraform-docs
     volumes:
-      - '.:/app'
-    working_dir: '/app'
-
-  python:
-    build:
-      context: .
-    volumes:
-      - '~/.aws:/root/.aws'
       - '.:/app'
     working_dir: '/app'
