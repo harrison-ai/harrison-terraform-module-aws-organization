@@ -24,9 +24,11 @@ resource "aws_organizations_organizational_unit" "child_org_units" {
 
 ##  -----  Accounts  -----  ##
 resource "aws_organizations_account" "this" {
-  for_each = var.accounts
+  # for_each = var.accounts
+  for_each = { for account in var.accounts : account.name => account }
 
-  name                       = each.key
+  name = each.value.name
+  # name                       = each.key
   email                      = each.value.email
   iam_user_access_to_billing = each.value.iam_user_access_to_billing
   parent_id                  = each.value.parent.uuid != null ? [for ou in local.org_units : ou.id if ou.uuid == each.value.parent.uuid][0] : aws_organizations_organization.org.roots[0].id
@@ -35,8 +37,8 @@ resource "aws_organizations_account" "this" {
     aws_organizations_organization.org
   ]
 
-  #  Terraform will always try replace an imported resource if this isn't set.
-  #  See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_account
+  # Terraform will always try replace an imported resource if this isn't set.
+  # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/organizations_account
   lifecycle {
     ignore_changes = [iam_user_access_to_billing]
   }

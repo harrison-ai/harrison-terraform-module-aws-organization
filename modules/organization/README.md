@@ -56,7 +56,7 @@ This module supports the creation and attachment of any number of SCP's, attache
 
 - Plan out the account naming scheme
 - Manually create the account designated the master account in the AWS Console
-- Log into the account and create an IAM User called `org-setup`, configured as follows:  (To be replaced by SSO setup??)
+- Log into the account and create an IAM User called `org-setup`, configured as follows:  (This user can later be deleted once SSO has been configured)
     - Programatic use only
     - Attach the AWS Managed `AdministratorAccess` IAM Policy
     - Download the static credentials and configure an appropriate Named profile
@@ -66,30 +66,16 @@ This module supports the creation and attachment of any number of SCP's, attache
 - Create a Terraform Stack or State for the AWS Org to be deployed from this module
 - Use the S3 bucket created above as the backend
 - NB:  Do not add any member accounts to the Org at this stage.
+- Import the Organization into the stack.
 
 See the Data Structures section for the expected Input Variable formats.
-
-### Adding Member Accounts
-
-It is anticipated that SCP's could conflict or block the baseline configuration of member accounts, therefore the provisioning has been broken down into a number of steps.  Note that this can and should be automated as a future item of work.
-
-1. Create the YAML configuration file for the new member account.
-2. Execute the `make create-account <path-to-input.yml` command.  This will use the Python SDK to create a new member account in the Root OU (where no SCP's should be applied.)
-3. Note the Account ID as output by the above script.
-4. TBC:  Apply the account baseline configuration
-5. Import the account into the Terraform state with the following commands:
-  ```
-  make tf-shell
-  cd <path-to-root-module>
-  terraform import 'module.<my-module>.aws_organizations_account.this["my-account-name"]' <AccountId>
-  ```
-6. Execute `make apply` to move the new Member Account to its designated parent OU.
 
 
 ## Input Variables
 
 > Certain Variables require uuid values as its possible to have multiple OU's with the same name.
 > Generate them with the `make uuid` command
+
 
 ### Service Control Policies
 
@@ -138,42 +124,34 @@ parent.uuid is the uuid value of the parent OU
 
 ### Member Accounts
 
+Add Member Accounts by adding them to the `member_accounts` local variable.  Note the parent name and uuid values to place the account into a specific Organizational Unit.  Set these values to null to place the account in the org root.
+
 ```terraform
-accounts = [
+member_accounts = [
   {
-    name    = "network"
-    email   = "aws.etwork@harrison.ai"
-    billing = "ALLOW"
-    parent  = {
-      name  = null
-      uuid  = null
+    name = "prod-workloads"
+    email = "aws.prod.workloads@example.com"
+    iam_user_access_to_billing = "ALLOW"
+    enable_budget = true
+    budget_limit_amount = "200"
+    parent = {
+      name = "production"
+      uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b6"
+    }
+  },
+  {
+    name = "dev-workloads"
+    email = "aws.dev.workloads@example.com"
+    iam_user_access_to_billing = "ALLOW"
+    enable_budget = true
+    budget_limit_amount = "200"
+    parent = {
+      name = null
+      uuid = null
     }
   }
 ]
 ```
-
-YAML format if provided as individual YAML files:
-
-```yaml
-name: network
-email: aws.network@harrison.ai
-iam_user_access_to_billing: ALLOW
-parent:
-  name: harrison
-  uuid: 5d41dd0c-561a-eab4-ad53-4da7753a89b7
-```
-
-example with no parent.  I.E at Organization root
-
-```yaml
-name: network
-email: aws.network@harrison.ai
-iam_user_access_to_billing: ALLOW
-parent:
-  name: ~
-  uuid: ~
-```
-
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -208,7 +186,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | `map(any)` | n/a | yes |
+| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | `list(any)` | n/a | yes |
 | <a name="input_aws_service_access_principals"></a> [aws\_service\_access\_principals](#input\_aws\_service\_access\_principals) | ist of AWS service principal names for which you want to enable integration with your organization | `list(any)` | n/a | yes |
 | <a name="input_child_org_units"></a> [child\_org\_units](#input\_child\_org\_units) | List of Organizational Units to be created directly under a Top Level Org Unit | `list(any)` | `[]` | no |
 | <a name="input_enabled_policy_types"></a> [enabled\_policy\_types](#input\_enabled\_policy\_types) | List of Organizations policy types to enable in the Organization Root | `list(any)` | n/a | yes |
