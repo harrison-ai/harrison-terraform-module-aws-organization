@@ -1,11 +1,3 @@
-##  -----  CloudTrail  -----  ##
-## bucket with policy - audit
-## cloudtrail - master
-## kms - master
-## kms policy - master
-## kms alias - master
-
-#  in audit account
 resource "aws_s3_bucket" "this" {
   provider = aws.audit
 

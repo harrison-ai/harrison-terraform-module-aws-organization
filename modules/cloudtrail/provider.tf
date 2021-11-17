@@ -19,7 +19,6 @@ provider "aws" {
 
   default_tags {
     tags = {
-      # Environment = var.env_name
       Project = var.project
       Repo    = var.repo
     }
