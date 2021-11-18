@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+
+  terraform:
+    build:
+        context: .
+    volumes:
+      - '~/.aws:/root/.aws'
+      - '.:/app'
+    working_dir: '/app'
+
+  terraform-docs:
+    image: cytopia/terraform-docs
+    volumes:
+      - '.:/app'
+    working_dir: '/app'
