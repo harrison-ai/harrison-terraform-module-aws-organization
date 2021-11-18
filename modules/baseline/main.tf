@@ -1,7 +1,7 @@
 ##  -----  Password Policy  -----  ##
 resource "aws_iam_account_password_policy" "default" {
 
-  minimum_password_length        = 20
+  minimum_password_length        = 32
   require_lowercase_characters   = true
   require_numbers                = true
   require_uppercase_characters   = true
@@ -74,6 +74,8 @@ resource "aws_budgets_budget" "this" {
 
 ##  -----  Delete the default VPC  -----  ##
 data "external" "delete_default_vpc" {
+  count = local.account.delete_default_vpc ? 1 : 0
+
   program = ["python", "${path.module}/delete-default-vpc.py"]
   query = {
     account_id = local.account_id

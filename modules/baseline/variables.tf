@@ -35,5 +35,6 @@ variable "account_ids" {
 
 variable "central_budget_nofication" {
   type        = string
+  default     = null
   description = "Central or Shared email address for Budget Notifications"
 }
