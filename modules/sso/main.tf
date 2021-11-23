@@ -19,7 +19,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "this" {
 
 
 #  maps an AD Group to a permission set and attaches it to an account(s)
-resource "aws_ssoadmin_account_assignment" "this" {
+resource "aws_ssoadmin_account_assignment" "groups" {
   for_each = { for assignment in local.sso_group_assignments : "${assignment.name}.${assignment.account}" => assignment }
 
   instance_arn       = local.sso_instance_arn
@@ -28,6 +28,16 @@ resource "aws_ssoadmin_account_assignment" "this" {
   principal_type     = "GROUP"
   target_type        = "AWS_ACCOUNT"
   target_id          = [for account in local.accounts : account.id if account.name == each.value.account][0]
+}
 
+#  maps an AD Group to a permission set and attaches it to an account(s)
+resource "aws_ssoadmin_account_assignment" "users" {
+  for_each = { for assignment in local.sso_user_assignments : "${assignment.name}.${assignment.account}" => assignment }
 
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.this[each.value.permission_set].arn
+  principal_id       = data.aws_identitystore_user.this[each.value.name].user_id
+  principal_type     = "USER"
+  target_type        = "AWS_ACCOUNT"
+  target_id          = [for account in local.accounts : account.id if account.name == each.value.account][0]
 }
