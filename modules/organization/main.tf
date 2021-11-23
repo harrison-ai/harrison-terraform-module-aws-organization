@@ -59,5 +59,5 @@ resource "aws_organizations_policy_attachment" "this" {
   for_each = { for attach in local.scp_attachments : "${attach.scp}.${attach.ou_uuid}" => attach }
 
   policy_id = aws_organizations_policy.this[each.value.scp].id
-  target_id = aws_organizations_organizational_unit.child_org_units[each.value.ou_uuid].id
+  target_id = try(aws_organizations_organizational_unit.top_level_org_units[each.value.ou_uuid].id, aws_organizations_organizational_unit.child_org_units[each.value.ou_uuid].id)
 }
