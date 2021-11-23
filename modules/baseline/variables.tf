@@ -13,6 +13,12 @@ variable "region" {
   description = "AWS Region"
 }
 
+variable "number_azs" {
+  type        = number
+  description = "Number of AZ's in which to provision resources"
+  default     = 3
+}
+
 variable "project" {
   type        = string
   description = "Designated project name"
@@ -35,6 +41,11 @@ variable "account_ids" {
 
 variable "central_budget_nofication" {
   type        = string
-  default     = null
+  default     = ""
   description = "Central or Shared email address for Budget Notifications"
+}
+
+variable "vpc_name" {
+  type    = string
+  default = "main"
 }
