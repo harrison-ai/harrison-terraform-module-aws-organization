@@ -1,3 +1,17 @@
+data "aws_iam_policy_document" "sandbox" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.block_root_user.json,
+    data.aws_iam_policy_document.block_access_keys.json,
+    data.aws_iam_policy_document.block_leave_organization.json,
+    data.aws_iam_policy_document.protect_security_settings.json,
+    data.aws_iam_policy_document.restrict_current_region.json,
+    data.aws_iam_policy_document.deny_internet_access.json,
+    data.aws_iam_policy_document.deny_create_vpc.json,
+    data.aws_iam_policy_document.deny_modify_budget.json,
+    data.aws_iam_policy_document.protect_org_roles.json
+  ]
+}
+
 data "aws_iam_policy_document" "block_root_user" {
   statement {
     sid       = "BlockRootUser"
@@ -44,13 +58,18 @@ data "aws_iam_policy_document" "protect_security_settings" {
       "s3:PutAccountPublicAccessBlock",
     ]
     resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
+    }
   }
 }
 
 data "aws_iam_policy_document" "restrict_current_region" {
   statement {
     effect = "Deny"
-    actions = [
+    not_actions = [
       "a4b:*",
       "acm:*",
       "aws-marketplace-management:*",
@@ -133,6 +152,48 @@ data "aws_iam_policy_document" "deny_create_vpc" {
       "ec2:CreateVpcPeeringConnection"
     ]
     resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "deny_modify_budget" {
+  statement {
+    sid    = "DenyModifyingBudget"
+    effect = "Deny"
+    actions = [
+      "budgets:ModifyBudget",
+      "budgets:DeleteBudgetAction"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "protect_org_roles" {
+  statement {
+    sid    = "DenyModifySpecificRoles"
+    effect = "Deny"
+    actions = [
+      "iam:AttachRolePolicy",
+      "iam:DeleteRole",
+      "iam:DeleteRolePermissionsBoundary",
+      "iam:DeleteRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:PutRolePermissionsBoundary",
+      "iam:PutRolePolicy",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateRole",
+      "iam:UpdateRoleDescription"
+    ]
+    resources = local.protected_iam_roles
     condition {
       test     = "StringNotLike"
       variable = "aws:PrincipalARN"

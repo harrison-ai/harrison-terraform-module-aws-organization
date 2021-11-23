@@ -83,6 +83,9 @@ locals {
       iam_user_access_to_billing = "ALLOW"
       enable_budget              = true
       budget_limit_amount        = "200"
+      delete_default_vpc         = true
+      create_vpc                 = false
+      vpc_cidr                   = null
       parent = {
         name = "production"
         uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b6"
@@ -94,11 +97,45 @@ locals {
       iam_user_access_to_billing = "ALLOW"
       enable_budget              = true
       budget_limit_amount        = "200"
+      delete_default_vpc         = true
+      create_vpc                 = false
+      vpc_cidr                   = null
       parent = {
         name = null
         uuid = null
       }
     }
   ]
+
+  sandbox_enabled_users = [
+    {
+      user     = "alice@example.com"
+      vpc_cidr = "100.64.0.0/16"
+    },
+    {
+      user     = "bob@example.com",
+      vpc_cidr = null
+    }
+  ]
+
+  sandbox_subnet_tiers = [
+    "public",
+    "private"
+  ]
+
+  individual_sandbox_accounts = [for user in var.sandbox_enabled_users : {
+    name                       = trimsuffix(user.user, "@harrison.ai")
+    email                      = user.user
+    iam_user_access_to_billing = "ALLOW"
+    enable_budget              = true
+    budget_limit_amount        = 200
+    delete_default_vpc         = true
+    create_vpc                 = user.vpc_cidr != null ? true : false
+    vpc_cidr                   = user.vpc_cidr
+    parent = {
+      name = "sandbox"
+      uuid = "6aefd914-cb87-4b6b-89d6-73ffbb55e565"
+    }
+  }]
 
 }
