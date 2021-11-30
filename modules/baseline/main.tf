@@ -53,21 +53,21 @@ resource "aws_budgets_budget" "this" {
     threshold                  = "60"
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
-    subscriber_email_addresses = [local.account.email, var.central_budget_nofication]
+    subscriber_email_addresses = compact([local.account.email, var.central_budget_nofication])
   }
   notification {
     comparison_operator        = "GREATER_THAN"
     threshold                  = "80"
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
-    subscriber_email_addresses = [local.account.email, var.central_budget_nofication]
+    subscriber_email_addresses = compact([local.account.email, var.central_budget_nofication])
   }
   notification {
     comparison_operator        = "GREATER_THAN"
     threshold                  = "100"
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
-    subscriber_email_addresses = [local.account.email, var.central_budget_nofication]
+    subscriber_email_addresses = compact([local.account.email, var.central_budget_nofication])
   }
 }
 
@@ -79,5 +79,42 @@ data "external" "delete_default_vpc" {
   program = ["python", "${path.module}/delete-default-vpc.py"]
   query = {
     account_id = local.account_id
+    region     = var.region
   }
+}
+
+module "subnetting" {
+  count = local.account.create_vpc ? 1 : 0
+
+  source = "git@github.com:harrison-ai/harrison-terraform-module-vpc-cidrs.git"
+
+  cidr          = local.account.vpc_cidr
+  subnet_prefix = 24
+  number_of_azs = var.number_azs
+  subnet_tiers = [
+    "public",
+    "private"
+  ]
+
+
+}
+
+##  -----  VPC  -----  ##
+module "vpc" {
+  count = local.account.create_vpc ? 1 : 0
+
+  source = "terraform-aws-modules/vpc/aws"
+
+  name                   = "temporary-vpc"
+  cidr                   = local.account.vpc_cidr
+  azs                    = slice(local.azs, 0, (var.number_azs - 1))
+  private_subnets        = module.subnetting[0].subnets.private
+  public_subnets         = module.subnetting[0].subnets.public
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
+  one_nat_gateway_per_az = false
+
+  depends_on = [
+    module.subnetting
+  ]
 }

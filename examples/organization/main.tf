@@ -15,7 +15,7 @@ module "cloudtrail" {
   source = "../../modules/cloudtrail"
 
   # s3 bucket account - fixme
-  account_id      = module.harrison.member_accounts["sch-testorg-audit"]
+  account_id      = module.harrison.member_accounts["audit"]
   cloudtrail_name = "${local.organization}-cloudtrail"
   bucket_name     = "${local.organization}-cloudtrail"
   project         = local.project
@@ -30,7 +30,7 @@ module "account_one" {
   name                      = "account-one"
   account_ids               = module.org.member_accounts
   accounts                  = local.accounts
-  central_budget_nofication = "dataengineering@harrison.ai"
+  central_budget_nofication = "accounts@example.com"
   region                    = local.region
   profile                   = local.profile
   project                   = local.project
@@ -43,7 +43,7 @@ module "account_two" {
   name                      = "account-two"
   account_ids               = module.org.member_accounts
   accounts                  = local.accounts
-  central_budget_nofication = "dataengineering@harrison.ai"
+  central_budget_nofication = "accounts@example.com"
   region                    = local.region
   profile                   = local.profile
   project                   = local.project

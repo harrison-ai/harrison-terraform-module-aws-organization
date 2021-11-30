@@ -19,8 +19,20 @@ locals {
         name           = group.name
         permission_set = group.permission_set
         account        = account
+        # principal_type = "GROUP"
       }
     ] if group.accounts != []
+  ])
+
+  sso_user_assignments = flatten([
+    for user in var.sso_users : [
+      for account in user.accounts : {
+        name           = user.name
+        permission_set = user.permission_set
+        account        = account
+        # principal_type = "USER"
+      }
+    ] if user.accounts != []
   ])
 
   accounts = data.aws_organizations_organization.this.accounts[*]

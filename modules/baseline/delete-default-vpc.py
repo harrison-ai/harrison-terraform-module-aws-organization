@@ -8,17 +8,15 @@ import boto3
 '''
 This script takes input from stdin from the external.delete_default_vpc resource.
 Expected input is a json object as follows:
-{"account_id": "123456789012"}
+{"account_id": "123456789012", "region": "ap-southeast-2"}
 '''
 
-AWS_REGION = os.getenv('AWS_REGION')
 
-
-def assume_role(role, duration=3600):
+def assume_role(region, session, role, duration=3600):
     '''Assume an IAM Role, returning the temp credentials'''
 
-    sts = boto3.client('sts',
-                       endpoint_url=f'https://sts.{AWS_REGION}.amazonaws.com')
+    sts = session.client('sts',
+                         endpoint_url=f'https://sts.{region}.amazonaws.com')
     resp = sts.assume_role(RoleArn=role,
                            RoleSessionName='baseline',
                            DurationSeconds=duration)
@@ -80,11 +78,12 @@ def main():
 
     input = [x.strip() for x in sys.stdin][0]
     account_id = json.loads(input)['account_id']
+    region = json.loads(input)['region']
 
     iam_role = f'arn:aws:iam::{account_id}:role/OrganizationAccountAccessRole'
 
-    credentials = assume_role(iam_role)
-    session = boto3.session.Session()
+    session = boto3.session.Session(region_name=region)
+    credentials = assume_role(region, session, iam_role)
     ec2 = session.client('ec2', **credentials)
 
     vpc_id = get_vpc_id(ec2)

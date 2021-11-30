@@ -39,7 +39,10 @@ module "example" {
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_subnetting"></a> [subnetting](#module\_subnetting) | ../cidr | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | n/a |
 
 ## Resources
 
@@ -57,12 +60,14 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_ids"></a> [account\_ids](#input\_account\_ids) | Map of Organization Member Account ID's | `map(any)` | n/a | yes |
 | <a name="input_accounts"></a> [accounts](#input\_accounts) | List of Organization Member Accounts | `list(any)` | n/a | yes |
-| <a name="input_central_budget_nofication"></a> [central\_budget\_nofication](#input\_central\_budget\_nofication) | Central or Shared email address for Budget Notifications | `string` | n/a | yes |
+| <a name="input_central_budget_nofication"></a> [central\_budget\_nofication](#input\_central\_budget\_nofication) | Central or Shared email address for Budget Notifications | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Member Account Name | `string` | n/a | yes |
+| <a name="input_number_azs"></a> [number\_azs](#input\_number\_azs) | Number of AZ's in which to provision resources | `number` | `3` | no |
 | <a name="input_profile"></a> [profile](#input\_profile) | AWS Shared Credentials Profile | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Designated project name | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
 | <a name="input_repo"></a> [repo](#input\_repo) | Name of this current repository | `string` | n/a | yes |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | n/a | `string` | `"main"` | no |
 
 ## Outputs
 
