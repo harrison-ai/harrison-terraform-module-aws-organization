@@ -19,7 +19,6 @@ indent_size = 2
 [*.{tf,tfvars}]
 indent_size = 2
 
-
 [LICENSE]
 insert_final_newline = false
 

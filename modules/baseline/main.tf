@@ -86,8 +86,7 @@ data "external" "delete_default_vpc" {
 module "subnetting" {
   count = local.account.create_vpc ? 1 : 0
 
-  #  fixme once merged
-  source = "git@github.com:harrison-ai/harrison-terraform-module-vpc-cidrs.git?ref=feature/MOD-162-initial-config"
+  source = "git@github.com:harrison-ai/harrison-terraform-module-vpc-cidrs.git"
 
   cidr          = local.account.vpc_cidr
   subnet_prefix = 24
