@@ -97,6 +97,7 @@ No modules.
 | [aws_ssoadmin_account_assignment.users](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_account_assignment) | resource |
 | [aws_ssoadmin_managed_policy_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_managed_policy_attachment) | resource |
 | [aws_ssoadmin_permission_set.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set) | resource |
+| [aws_ssoadmin_permission_set_inline_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set_inline_policy) | resource |
 | [aws_identitystore_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/identitystore_group) | data source |
 | [aws_identitystore_user.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/identitystore_user) | data source |
 | [aws_organizations_organization.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/organizations_organization) | data source |
@@ -106,7 +107,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_permission_sets"></a> [permission\_sets](#input\_permission\_sets) | List of the required Permission Sets | `list(any)` | n/a | yes |
+| <a name="input_inline_permission_sets"></a> [inline\_permission\_sets](#input\_inline\_permission\_sets) | List of the required Permission Sets that are comprised of inline IAM Policies | `list(any)` | n/a | yes |
+| <a name="input_managed_permission_sets"></a> [managed\_permission\_sets](#input\_managed\_permission\_sets) | List of the required Permission Sets that contain AWS Managed Policies | `list(any)` | n/a | yes |
 | <a name="input_sandbox_enabled_users"></a> [sandbox\_enabled\_users](#input\_sandbox\_enabled\_users) | List of users who have personal sandbox accounts | `list(string)` | `[]` | no |
 | <a name="input_sso_groups"></a> [sso\_groups](#input\_sso\_groups) | List of the Groups as obtained from the Identity Provider | `list(any)` | `[]` | no |
 | <a name="input_sso_users"></a> [sso\_users](#input\_sso\_users) | List of the Users as obtained from the Identity Provider | `list(any)` | `[]` | no |
