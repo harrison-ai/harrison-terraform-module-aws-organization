@@ -1,5 +1,5 @@
 resource "aws_ssoadmin_permission_set" "this" {
-  for_each = { for permission in var.permission_sets : permission.name => permission }
+  for_each = merge({ for p in var.managed_permission_sets : p.name => p }, { for p in var.inline_permission_sets : p.name => p })
 
   name             = each.value.name
   description      = each.value.description
@@ -8,12 +8,22 @@ resource "aws_ssoadmin_permission_set" "this" {
 }
 
 
-#  attaches an IAM Policy to a permission set
+#  attaches an AWS Managed IAM Policy to a permission set
 resource "aws_ssoadmin_managed_policy_attachment" "this" {
-  for_each = { for attach in local.permission_set_attachments : "${attach.name}.${attach.policy}" => attach }
+  for_each = { for attach in local.managed_permission_set_attachments : "${attach.name}.${attach.policy}" => attach }
 
   instance_arn       = local.sso_instance_arn
   managed_policy_arn = each.value.policy
+  permission_set_arn = aws_ssoadmin_permission_set.this[each.value.name].arn
+}
+
+
+#  attaches an inline / custom IAM Policy to a permission set
+resource "aws_ssoadmin_permission_set_inline_policy" "this" {
+  for_each = { for set in var.inline_permission_sets : set.name => set }
+
+  instance_arn       = local.sso_instance_arn
+  inline_policy      = each.value.inline_policy
   permission_set_arn = aws_ssoadmin_permission_set.this[each.value.name].arn
 }
 

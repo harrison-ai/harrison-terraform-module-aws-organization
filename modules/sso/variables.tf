@@ -1,6 +1,11 @@
-variable "permission_sets" {
+variable "managed_permission_sets" {
   type        = list(any)
-  description = "List of the required Permission Sets"
+  description = "List of the required Permission Sets that contain AWS Managed Policies"
+}
+
+variable "inline_permission_sets" {
+  type        = list(any)
+  description = "List of the required Permission Sets that are comprised of inline IAM Policies"
 }
 
 variable "sso_groups" {
