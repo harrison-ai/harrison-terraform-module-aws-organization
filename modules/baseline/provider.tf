@@ -7,10 +7,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.64"
     }
-    external = {
-      source  = "hashicorp/external"
-      version = "~> 2.1"
-    }
   }
 }
 
@@ -27,6 +23,6 @@ provider "aws" {
   }
 
   assume_role {
-    role_arn = "arn:aws:iam::${local.account_id}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::${var.config.account_id}:role/OrganizationAccountAccessRole"
   }
 }
