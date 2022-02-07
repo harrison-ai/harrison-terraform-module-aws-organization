@@ -2,8 +2,7 @@ version: '3.7'
 services:
 
   terraform:
-    build:
-        context: .
+    image: hashicorp/terraform:1.1.5
     volumes:
       - '~/.aws:/root/.aws'
       - '.:/app'
