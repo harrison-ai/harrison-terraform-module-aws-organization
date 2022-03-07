@@ -2,43 +2,6 @@ resource "aws_s3_bucket" "this" {
   provider = aws.audit
 
   bucket = var.bucket_name
-  # acl    = "private"
-  # server_side_encryption_configuration {
-  #   rule {
-  #     apply_server_side_encryption_by_default {
-  #       sse_algorithm = "AES256"
-  #     }
-  #   }
-  # }
-
-  # versioning {
-  #   enabled = true
-  # }
-
-  # lifecycle_rule {
-  #   id      = "transition-to-IA"
-  #   enabled = true
-  #   transition {
-  #     days          = var.transition_to_ia_days
-  #     storage_class = "STANDARD_IA"
-  #   }
-  # }
-
-  # lifecycle_rule {
-  #   id      = "expiration"
-  #   enabled = true
-  #   expiration {
-  #     # 7 years
-  #     days = var.expiration_days
-  #   }
-  # }
-
-  # lifecycle_rule {
-  #   id                                     = "abort-incomplete-multipart-upload"
-  #   enabled                                = true
-  #   abort_incomplete_multipart_upload_days = 30
-  # }
-
   tags = {
     Name = var.bucket_name
   }
@@ -46,11 +9,15 @@ resource "aws_s3_bucket" "this" {
 
 
 resource "aws_s3_bucket_acl" "this" {
+  provider = aws.audit
+
   bucket = aws_s3_bucket.this.id
   acl    = "private"
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  provider = aws.audit
+
   bucket = aws_s3_bucket.this.id
   rule {
     id     = "transition-to-IA"
@@ -75,7 +42,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     abort_incomplete_multipart_upload {
       days_after_initiation = 30
     }
-    # abort_incomplete_multipart_upload_days = 30
   }
 }
 
@@ -94,6 +60,8 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  provider = aws.audit
+
   bucket = aws_s3_bucket.this.id
   rule {
     apply_server_side_encryption_by_default {
@@ -104,6 +72,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 
 
 resource "aws_s3_bucket_versioning" "this" {
+  provider = aws.audit
+
   bucket = aws_s3_bucket.this.id
   versioning_configuration {
     status = "Enabled"
