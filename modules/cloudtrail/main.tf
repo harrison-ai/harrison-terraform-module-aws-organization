@@ -2,45 +2,49 @@ resource "aws_s3_bucket" "this" {
   provider = aws.audit
 
   bucket = var.bucket_name
+  tags = {
+    Name = var.bucket_name
+  }
+}
+
+
+resource "aws_s3_bucket_acl" "this" {
+  provider = aws.audit
+
+  bucket = aws_s3_bucket.this.id
   acl    = "private"
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
+}
 
-  versioning {
-    enabled = true
-  }
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  provider = aws.audit
 
-  lifecycle_rule {
-    id      = "transition-to-IA"
-    enabled = true
+  bucket = aws_s3_bucket.this.id
+  rule {
+    id     = "transition-to-IA"
+    status = "Enabled"
+    filter {}
     transition {
       days          = var.transition_to_ia_days
       storage_class = "STANDARD_IA"
     }
   }
 
-  lifecycle_rule {
-    id      = "expiration"
-    enabled = true
+  rule {
+    id     = "expiration"
+    status = "Enabled"
+    filter {}
     expiration {
       # 7 years
       days = var.expiration_days
     }
   }
-
-  lifecycle_rule {
-    id                                     = "abort-incomplete-multipart-upload"
-    enabled                                = true
-    abort_incomplete_multipart_upload_days = 30
-  }
-
-  tags = {
-    Name = var.bucket_name
+  rule {
+    id     = "abort-incomplete-multipart-upload"
+    status = "Enabled"
+    filter {}
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 30
+    }
   }
 }
 
@@ -57,6 +61,28 @@ resource "aws_s3_bucket_public_access_block" "this" {
     aws_s3_bucket.this
   ]
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  provider = aws.audit
+
+  bucket = aws_s3_bucket.this.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+
+resource "aws_s3_bucket_versioning" "this" {
+  provider = aws.audit
+
+  bucket = aws_s3_bucket.this.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 
 resource "aws_s3_bucket_policy" "this" {
   provider = aws.audit
