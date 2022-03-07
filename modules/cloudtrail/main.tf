@@ -22,6 +22,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   rule {
     id     = "transition-to-IA"
     status = "Enabled"
+    filter {}
     transition {
       days          = var.transition_to_ia_days
       storage_class = "STANDARD_IA"
@@ -31,6 +32,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   rule {
     id     = "expiration"
     status = "Enabled"
+    filter {}
     expiration {
       # 7 years
       days = var.expiration_days
@@ -39,6 +41,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   rule {
     id                                     = "abort-incomplete-multipart-upload"
     status                                 = "Enabled"
+    filter {}
     abort_incomplete_multipart_upload {
       days_after_initiation = 30
     }
