@@ -2,45 +2,77 @@ resource "aws_s3_bucket" "this" {
   provider = aws.audit
 
   bucket = var.bucket_name
+  # acl    = "private"
+  # server_side_encryption_configuration {
+  #   rule {
+  #     apply_server_side_encryption_by_default {
+  #       sse_algorithm = "AES256"
+  #     }
+  #   }
+  # }
+
+  # versioning {
+  #   enabled = true
+  # }
+
+  # lifecycle_rule {
+  #   id      = "transition-to-IA"
+  #   enabled = true
+  #   transition {
+  #     days          = var.transition_to_ia_days
+  #     storage_class = "STANDARD_IA"
+  #   }
+  # }
+
+  # lifecycle_rule {
+  #   id      = "expiration"
+  #   enabled = true
+  #   expiration {
+  #     # 7 years
+  #     days = var.expiration_days
+  #   }
+  # }
+
+  # lifecycle_rule {
+  #   id                                     = "abort-incomplete-multipart-upload"
+  #   enabled                                = true
+  #   abort_incomplete_multipart_upload_days = 30
+  # }
+
+  tags = {
+    Name = var.bucket_name
+  }
+}
+
+
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.this.id
   acl    = "private"
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
+}
 
-  versioning {
-    enabled = true
-  }
-
-  lifecycle_rule {
-    id      = "transition-to-IA"
-    enabled = true
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  bucket = aws_s3_bucket.this.id
+  rule {
+    id     = "transition-to-IA"
+    status = "Enabled"
     transition {
       days          = var.transition_to_ia_days
       storage_class = "STANDARD_IA"
     }
   }
 
-  lifecycle_rule {
-    id      = "expiration"
-    enabled = true
+  rule {
+    id     = "expiration"
+    status = "Enabled"
     expiration {
       # 7 years
       days = var.expiration_days
     }
   }
-
-  lifecycle_rule {
+  rule {
     id                                     = "abort-incomplete-multipart-upload"
-    enabled                                = true
+    status                                 = "Enabled"
     abort_incomplete_multipart_upload_days = 30
-  }
-
-  tags = {
-    Name = var.bucket_name
   }
 }
 
@@ -57,6 +89,24 @@ resource "aws_s3_bucket_public_access_block" "this" {
     aws_s3_bucket.this
   ]
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.this.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.this.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 
 resource "aws_s3_bucket_policy" "this" {
   provider = aws.audit
