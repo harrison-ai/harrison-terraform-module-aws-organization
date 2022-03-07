@@ -39,8 +39,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
     }
   }
   rule {
-    id                                     = "abort-incomplete-multipart-upload"
-    status                                 = "Enabled"
+    id     = "abort-incomplete-multipart-upload"
+    status = "Enabled"
     filter {}
     abort_incomplete_multipart_upload {
       days_after_initiation = 30
