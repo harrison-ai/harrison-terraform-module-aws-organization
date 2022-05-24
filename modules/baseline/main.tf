@@ -20,6 +20,11 @@ resource "aws_s3_account_public_access_block" "this" {
   restrict_public_buckets = true
 }
 
+##  -----  Default EBS Encryption  -----  ##
+resource "aws_ebs_encryption_by_default" "this" {
+  enabled = true
+}
+
 
 ##  -----  Budget  -----  ##
 resource "aws_budgets_budget" "this" {
