@@ -27,3 +27,8 @@ variable "repo" {
   type        = string
   description = "Name of this current repository"
 }
+
+variable "create_s3_account_public_access_block" {
+  type    = bool
+  default = true
+}
