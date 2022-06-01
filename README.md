@@ -3,6 +3,7 @@
 Includes modules for:
 
 - Organization, Organizational Units, Service Control Policies
+- CloudTrail
 - Single Sign On
 - Member Account baseline configuration
 
