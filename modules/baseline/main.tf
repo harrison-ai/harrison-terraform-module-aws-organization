@@ -1,7 +1,7 @@
 # ##  -----  Password Policy  -----  ##
 resource "aws_iam_account_password_policy" "default" {
 
-  minimum_password_length        = 64
+  minimum_password_length        = var.min_iam_password_length
   require_lowercase_characters   = true
   require_numbers                = true
   require_uppercase_characters   = true
