@@ -29,6 +29,13 @@ variable "repo" {
 }
 
 variable "create_s3_account_public_access_block" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Create the account level S3 Public Access Block"
+}
+
+variable "min_iam_password_length" {
+  type        = number
+  default     = 64
+  description = "Minimum length of IAM password"
 }

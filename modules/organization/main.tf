@@ -24,11 +24,9 @@ resource "aws_organizations_organizational_unit" "child_org_units" {
 
 ##  -----  Accounts  -----  ##
 resource "aws_organizations_account" "this" {
-  # for_each = var.accounts
   for_each = { for account in var.accounts : account.name => account }
 
-  name = each.value.name
-  # name                       = each.key
+  name                       = each.value.name
   email                      = each.value.email
   iam_user_access_to_billing = each.value.iam_user_access_to_billing
   parent_id                  = each.value.parent.uuid != null ? [for ou in local.org_units : ou.id if ou.uuid == each.value.parent.uuid][0] : aws_organizations_organization.org.roots[0].id
