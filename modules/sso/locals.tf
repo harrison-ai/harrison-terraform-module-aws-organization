@@ -33,6 +33,5 @@ locals {
     ] if user.accounts != []
   ])
 
-  accounts = data.aws_organizations_organization.this.accounts[*]
-
+  accounts = var.delegated_sso_admin ? data.aws_organizations_organization.this[0].accounts[*] : var.accounts_list
 }

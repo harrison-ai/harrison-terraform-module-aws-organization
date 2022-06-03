@@ -1,4 +1,6 @@
-data "aws_organizations_organization" "this" {}
+data "aws_organizations_organization" "this" {
+  count = var.delegated_sso_admin ? 1 : 0
+}
 
 data "aws_ssoadmin_instances" "selected" {}
 
