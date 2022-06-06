@@ -25,3 +25,15 @@ variable "sandbox_enabled_users" {
   default     = []
   description = "List of users who have personal sandbox accounts"
 }
+
+variable "delegated_sso_admin" {
+  type        = bool
+  default     = false
+  description = "Is Delegated SSO Admin configured in this Organisation?"
+}
+
+variable "accounts_list" {
+  type        = list(any)
+  default     = []
+  description = "A list of Member Account Name and ID mappings, required if Delegated SSO Admin is in use"
+}
