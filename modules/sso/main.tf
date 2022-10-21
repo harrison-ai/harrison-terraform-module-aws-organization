@@ -4,7 +4,7 @@ resource "aws_ssoadmin_permission_set" "this" {
   name             = each.value.name
   description      = each.value.description
   instance_arn     = local.sso_instance_arn
-  session_duration = "PT12H"
+  session_duration = try(each.value.session_duration, "PT12H")
 }
 
 
