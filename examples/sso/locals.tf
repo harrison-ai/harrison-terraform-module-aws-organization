@@ -22,10 +22,10 @@ locals {
   # maps a permission set to an inline IAM Policy (singlular)
   inline_permission_sets = [
     {
-      name          = "custom_permission_set"
-      description   = "Description"
-      inline_policy = data.aws_iam_policy_document.custom_permission_set.json
+      name             = "custom_permission_set"
+      description      = "Description"
+      inline_policy    = data.aws_iam_policy_document.custom_permission_set.json
+      session_duration = "PT4H" #default is PT12H if unset
     }
   ]
-
 }
