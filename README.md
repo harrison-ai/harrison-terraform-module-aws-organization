@@ -11,7 +11,7 @@ Please see the README's in the individual module directories for their documenta
 
 ## About harrison.ai
 
-This module is maintained by the Data Engineering team at [harrison.ai](https://harrison.ai).
+This module is maintained by the Platform team at [harrison.ai](https://harrison.ai).
 
 At [harrison.ai](https://harrison.ai) our mission is to create AI-as-a-medical-device solutions through ventures and ultimately improve the standard of healthcare for 1 million lives every day.
 
