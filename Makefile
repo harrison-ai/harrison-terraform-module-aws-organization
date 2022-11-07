@@ -1,3 +1,10 @@
+.PHONY: .tf_version
+
+TF_VERSION := $(shell cat .tf_version)
+
+.EXPORT_ALL_VARIABLES:
+	export TF_VERSION=${TF_VERSION}
+
 build:
 	docker-compose build
 
@@ -5,7 +12,7 @@ fmt:
 	docker-compose run --rm terraform fmt -recursive
 
 tf-shell:
-	docker-compose run --rm --entrypoint='' terraform /bin/bash
+	docker-compose run --rm --entrypoint='' terraform /bin/ash
 
 pull:
 	docker-compose pull

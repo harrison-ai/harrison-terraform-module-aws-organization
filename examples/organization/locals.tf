@@ -86,6 +86,7 @@ locals {
       delete_default_vpc         = true
       create_vpc                 = false
       vpc_cidr                   = null
+      close_on_deletion          = true
       parent = {
         name = "production"
         uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b6"
@@ -100,6 +101,7 @@ locals {
       delete_default_vpc         = true
       create_vpc                 = false
       vpc_cidr                   = null
+      close_on_deletion          = true
       parent = {
         name = null
         uuid = null
@@ -113,8 +115,9 @@ locals {
       vpc_cidr = "100.64.0.0/16"
     },
     {
-      user     = "bob@example.com",
-      vpc_cidr = null
+      user              = "bob@example.com",
+      vpc_cidr          = null,
+      close_on_deletion = false
     }
   ]
 
@@ -132,6 +135,7 @@ locals {
     delete_default_vpc         = true
     create_vpc                 = user.vpc_cidr != null ? true : false
     vpc_cidr                   = user.vpc_cidr
+    close_on_deletion          = try(user.close_on_deletion, true)
     parent = {
       name = "sandbox"
       uuid = "6aefd914-cb87-4b6b-89d6-73ffbb55e565"
