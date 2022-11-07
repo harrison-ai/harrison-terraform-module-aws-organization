@@ -30,6 +30,7 @@ resource "aws_organizations_account" "this" {
   email                      = each.value.email
   iam_user_access_to_billing = each.value.iam_user_access_to_billing
   parent_id                  = each.value.parent.uuid != null ? [for ou in local.org_units : ou.id if ou.uuid == each.value.parent.uuid][0] : aws_organizations_organization.org.roots[0].id
+  close_on_deletion          = each.value.close_on_deletion
 
   depends_on = [
     aws_organizations_organization.org
