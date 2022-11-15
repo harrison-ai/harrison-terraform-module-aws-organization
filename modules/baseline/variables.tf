@@ -39,3 +39,9 @@ variable "min_iam_password_length" {
   default     = 64
   description = "Minimum length of IAM password"
 }
+
+variable "destroy" {
+  type        = bool
+  default     = false
+  description = "Flag to enable deletion of resources where the provider is embedded into the module"
+}

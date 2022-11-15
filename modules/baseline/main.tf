@@ -1,5 +1,6 @@
 # ##  -----  Password Policy  -----  ##
 resource "aws_iam_account_password_policy" "default" {
+  count = var.destroy ? 0 : 1
 
   minimum_password_length        = var.min_iam_password_length
   require_lowercase_characters   = true
@@ -12,7 +13,7 @@ resource "aws_iam_account_password_policy" "default" {
 
 ##  -----  (Optional) S3 Account Public Block  -----  ##
 resource "aws_s3_account_public_access_block" "this" {
-  count = var.create_s3_account_public_access_block ? 1 : 0
+  count = (var.destroy || var.create_s3_account_public_access_block == 0) ? 0 : 1
 
   account_id              = var.config.account_id
   block_public_acls       = false
@@ -23,13 +24,15 @@ resource "aws_s3_account_public_access_block" "this" {
 
 ##  -----  Default EBS Encryption  -----  ##
 resource "aws_ebs_encryption_by_default" "this" {
+  count = var.destroy ? 0 : 1
+
   enabled = true
 }
 
 
 ##  -----  Budget  -----  ##
 resource "aws_budgets_budget" "this" {
-  count = var.config.budget_limit_amount != null ? 1 : 0
+  count = (var.destroy || var.config.budget_limit_amount == null) ? 0 : 1
 
   name         = "default-budget"
   budget_type  = "COST"
