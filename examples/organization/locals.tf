@@ -91,6 +91,9 @@ locals {
         name = "production"
         uuid = "5d41dd0c-561a-eab4-ad53-4da7753a89b6"
       }
+      tags = {
+        AccountType = "critical"
+      }
     },
     {
       name                       = "dev-workloads"
@@ -105,6 +108,9 @@ locals {
       parent = {
         name = null
         uuid = null
+      }
+      tags = {
+        AccountType = "critical"
       }
     }
   ]
@@ -140,6 +146,9 @@ locals {
       name = "sandbox"
       uuid = "6aefd914-cb87-4b6b-89d6-73ffbb55e565"
     }
+    tags = {
+        AccountType = "sandbox"
+      }
   }]
 
 }
