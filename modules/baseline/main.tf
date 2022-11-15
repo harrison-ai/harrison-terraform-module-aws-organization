@@ -73,3 +73,13 @@ resource "aws_budgets_budget" "this" {
     subscriber_email_addresses = compact([var.config.email, var.central_budget_notification])
   }
 }
+
+moved {
+  from = aws_ebs_encryption_by_default.this
+  to   = aws_ebs_encryption_by_default.this[0]
+}
+
+moved {
+  from = aws_iam_account_password_policy.default
+  to   = aws_iam_account_password_policy.default[0]
+}
