@@ -17,6 +17,30 @@ module "example" {
   region                      = "ap-southeast-2"
 }
 ```
+### Destroying infra
+
+To avoid massive code repitition, we have broken a Terraform convention and placed the provider within the module for this module. This has the negative side effect of making infra a bit difficult to destroy. (When the module is removed from config, so is the provider) To work around this, destroying infra created from this `baseline` module is a two step process.
+
+1. Add a `destroy = true` variable into the module
+2. Execute `terraform apply` to destroy the infra
+3. Delete the module from composition and execute another `plan` or `apply` to sanity check
+
+By example:
+
+```terraform
+module "user_a" {
+  source = "modules/baseline"
+
+  destroy = true
+
+  config                      = local.individual_sandbox_account_config["user_a@example.com"]
+  central_budget_notification = var.central_budget_notification
+  project                     = var.project
+  repo                        = var.repo
+  profile                     = var.profile
+  region                      = var.region
+}
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -52,6 +76,7 @@ No modules.
 | <a name="input_central_budget_notification"></a> [central\_budget\_notification](#input\_central\_budget\_notification) | Central or Shared email address for Budget Notifications | `string` | `""` | no |
 | <a name="input_config"></a> [config](#input\_config) | Map of configuration items | `map(any)` | n/a | yes |
 | <a name="input_create_s3_account_public_access_block"></a> [create\_s3\_account\_public\_access\_block](#input\_create\_s3\_account\_public\_access\_block) | Create the account level S3 Public Access Block | `bool` | `true` | no |
+| <a name="input_destroy"></a> [destroy](#input\_destroy) | Flag to enable deletion of resources where the provider is embedded into the module | `bool` | `false` | no |
 | <a name="input_min_iam_password_length"></a> [min\_iam\_password\_length](#input\_min\_iam\_password\_length) | Minimum length of IAM password | `number` | `64` | no |
 | <a name="input_profile"></a> [profile](#input\_profile) | AWS Shared Credentials Profile | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Designated project name | `string` | n/a | yes |
