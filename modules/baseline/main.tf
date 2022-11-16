@@ -13,7 +13,7 @@ resource "aws_iam_account_password_policy" "default" {
 
 ##  -----  (Optional) S3 Account Public Block  -----  ##
 resource "aws_s3_account_public_access_block" "this" {
-  count = (var.destroy || var.create_s3_account_public_access_block == 0) ? 0 : 1
+  count = (var.destroy || ! var.create_s3_account_public_access_block) ? 0 : 1
 
   account_id              = var.config.account_id
   block_public_acls       = false
