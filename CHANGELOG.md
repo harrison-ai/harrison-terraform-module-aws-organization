@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.7]
 
-- Create the Vanta integration module and incorperate into the `baseline`` and `organization`` module.
+- Create the Vanta integration module and incorperate it into the `baseline` and `organization` module.
 
 
 ## [0.1.6]
