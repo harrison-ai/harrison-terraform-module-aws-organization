@@ -1,5 +1,4 @@
 locals {
-
   top_level_org_unit_attributes = [
     for ou in var.top_level_org_units :
     {

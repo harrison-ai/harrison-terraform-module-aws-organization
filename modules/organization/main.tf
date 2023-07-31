@@ -61,3 +61,14 @@ resource "aws_organizations_policy_attachment" "this" {
   policy_id = aws_organizations_policy.this[each.value.scp].id
   target_id = try(aws_organizations_organizational_unit.top_level_org_units[each.value.ou_uuid].id, aws_organizations_organizational_unit.child_org_units[each.value.ou_uuid].id)
 }
+
+##  -----  Vanta Auditing Service  -----  ##
+module "vanta" {
+  count  = var.enable_vanta_integration ? 1 : 0
+  source = "../vanta"
+
+  vanta_account_id                  = var.vanta_account_id
+  vanta_external_id                 = var.vanta_external_id
+  enable_identity_center_monitoring = true
+
+}
