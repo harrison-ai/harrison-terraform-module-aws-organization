@@ -91,6 +91,6 @@ module "vanta" {
 
   vanta_account_id                  = var.vanta_account_id
   vanta_external_id                 = var.vanta_external_id
-  enable_identity_center_monitoring = var.enable_identity_center_monitoring
+  enable_identity_center_monitoring = true
 
 }

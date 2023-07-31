@@ -60,13 +60,6 @@ variable "vanta_external_id" {
   sensitive   = true
 }
 
-variable "enable_identity_center_monitoring" {
-  type        = bool
-  default     = false
-  description = "Enable IAM Identity Center scanning."
-}
-
-
 variable "destroy" {
   type        = bool
   default     = false
