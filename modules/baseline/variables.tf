@@ -43,7 +43,7 @@ variable "min_iam_password_length" {
 variable "enable_vanta_integration" {
   type        = bool
   default     = false
-  description = "Enables vanta IAM integration if set to true. See https://help.vanta.com/hc/en-us/articles/4411799148692-Connecting-Vanta-AWS-account"
+  description = "Enable Vanta integration."
 }
 
 variable "vanta_account_id" {
