@@ -31,3 +31,23 @@ variable "service_control_policies" {
   default     = []
   description = "List of Service Control Policies (SCP's)"
 }
+
+variable "enable_vanta_integration" {
+  type        = bool
+  default     = false
+  description = "Enable Vanta integration."
+}
+
+variable "vanta_account_id" {
+  type        = string
+  default     = null
+  description = "Vanta Account ID. Can be retrieved from the portal during the AWS account set up."
+  sensitive   = true
+}
+
+variable "vanta_external_id" {
+  type        = string
+  default     = null
+  description = "Vanta External ID. Can be retrieved from the portal during the AWS account set up."
+  sensitive   = true
+}
