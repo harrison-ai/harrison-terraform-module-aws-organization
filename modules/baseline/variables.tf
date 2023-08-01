@@ -40,6 +40,26 @@ variable "min_iam_password_length" {
   description = "Minimum length of IAM password"
 }
 
+variable "enable_vanta_integration" {
+  type        = bool
+  default     = false
+  description = "Enable Vanta integration."
+}
+
+variable "vanta_account_id" {
+  type        = string
+  default     = null
+  description = "Vanta Account ID. Can be retrieved from the portal during the AWS account set up."
+  sensitive   = true
+}
+
+variable "vanta_external_id" {
+  type        = string
+  default     = null
+  description = "Vanta External ID. Can be retrieved from the portal during the AWS account set up."
+  sensitive   = true
+}
+
 variable "destroy" {
   type        = bool
   default     = false
