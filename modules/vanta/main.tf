@@ -4,7 +4,7 @@ resource "aws_iam_role" "vanta_auditor" {
   managed_policy_arns = [
     aws_iam_policy.vanta_access.arn,
     "arn:aws:iam::aws:policy/SecurityAudit",
-    ]
+  ]
 }
 
 resource "aws_iam_policy" "vanta_access" {
