@@ -8,7 +8,8 @@ data "aws_iam_policy_document" "sandbox" {
     data.aws_iam_policy_document.deny_internet_access.json,
     data.aws_iam_policy_document.deny_create_vpc.json,
     data.aws_iam_policy_document.deny_modify_budget.json,
-    data.aws_iam_policy_document.protect_org_roles.json
+    data.aws_iam_policy_document.protect_org_roles.json,
+    data.aws_iam_policy_document.deny_modify_vpc_tags.json,
   ]
 }
 
@@ -169,6 +170,23 @@ data "aws_iam_policy_document" "deny_modify_budget" {
       "budgets:DeleteBudgetAction"
     ]
     resources = ["*"]
+    condition {
+      test     = "StringNotLike"
+      variable = "aws:PrincipalARN"
+      values   = ["arn:aws:iam::*:role/OrganizationAccountAccessRole"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "deny_modify_vpc_tags" {
+  statement {
+    sid    = "DenyModifyVpcTags"
+    effect = "Deny"
+    actions = [
+      "ec2:DeleteTags",
+      "ec2:CreateTags"
+    ]
+    resources = ["arn:aws:ec2:*:*:vpc/*"]
     condition {
       test     = "StringNotLike"
       variable = "aws:PrincipalARN"
