@@ -147,8 +147,8 @@ locals {
       uuid = "6aefd914-cb87-4b6b-89d6-73ffbb55e565"
     }
     tags = {
-        AccountType = "sandbox"
-      }
+      AccountType = "sandbox"
+    }
   }]
 
 }
