@@ -116,7 +116,7 @@ data "aws_iam_policy_document" "kms" {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
       values = [
-        local.master_account_id
+        var.account_id
       ]
     }
     condition {
