@@ -7,6 +7,36 @@ resource "aws_ssoadmin_permission_set" "this" {
   session_duration = try(each.value.session_duration, "PT12H")
 }
 
+#  attaches permission boundaries
+resource "aws_ssoadmin_permissions_boundary_attachment" "this" {
+  for_each = {
+    for p in concat(var.managed_permission_sets, var.inline_permission_sets) :
+    p.name => p if p.permissions_boundary != null
+  }
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
+
+  dynamic "permissions_boundary" {
+    for_each = each.value.permissions_boundary.customer_managed_policy_reference != null ? [each.value.permissions_boundary.customer_managed_policy_reference] : []
+    content {
+      dynamic "customer_managed_policy_reference" {
+        for_each = [permissions_boundary.value]
+        content {
+          name = customer_managed_policy_reference.value.name
+          path = customer_managed_policy_reference.value.path
+        }
+      }
+    }
+  }
+
+  dynamic "permissions_boundary" {
+    for_each = each.value.permissions_boundary.managed_policy_arn != null ? [each.value.permissions_boundary.managed_policy_arn] : []
+    content {
+      managed_policy_arn = permissions_boundary.value
+    }
+  }
+}
 
 #  attaches an AWS Managed IAM Policy to a permission set
 resource "aws_ssoadmin_managed_policy_attachment" "this" {
