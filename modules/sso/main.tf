@@ -17,6 +17,8 @@ resource "aws_ssoadmin_permissions_boundary_attachment" "this" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
 
+  #  the two dynamic blocks are enforced to be mutually exclusive
+  #  sets customer_managed policy if not null
   dynamic "permissions_boundary" {
     for_each = each.value.permissions_boundary.customer_managed_policy_reference != null ? [each.value.permissions_boundary.customer_managed_policy_reference] : []
     content {
@@ -30,6 +32,7 @@ resource "aws_ssoadmin_permissions_boundary_attachment" "this" {
     }
   }
 
+  #  sets managed_policy_arn if not null
   dynamic "permissions_boundary" {
     for_each = each.value.permissions_boundary.managed_policy_arn != null ? [each.value.permissions_boundary.managed_policy_arn] : []
     content {
