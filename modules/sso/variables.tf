@@ -16,7 +16,7 @@ variable "managed_permission_sets" {
 
   validation {
     condition = alltrue([
-      for ps in var.inline_permission_sets :
+      for ps in var.managed_permission_sets :
       ps.permissions_boundary == null ||
       (ps.permissions_boundary.managed_policy_arn != null) !=
       (ps.permissions_boundary.customer_managed_policy_reference != null)
