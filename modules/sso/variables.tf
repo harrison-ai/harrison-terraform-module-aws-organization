@@ -18,8 +18,10 @@ variable "managed_permission_sets" {
     condition = alltrue([
       for ps in var.managed_permission_sets :
       ps.permissions_boundary == null ||
-      (ps.permissions_boundary.managed_policy_arn != null) !=
-      (ps.permissions_boundary.customer_managed_policy_reference != null)
+      (
+        (try(ps.permissions_boundary.managed_policy_arn, null) != null) !=
+        (try(ps.permissions_boundary.customer_managed_policy_reference, null) != null)
+      )
     ])
     error_message = "When permissions_boundary is set, exactly one of managed_policy_arn or customer_managed_policy_reference must be provided."
   }
@@ -40,13 +42,14 @@ variable "inline_permission_sets" {
     }))
   }))
   description = "List of the required Permission Sets that are comprised of inline IAM Policies"
-
   validation {
     condition = alltrue([
       for ps in var.inline_permission_sets :
       ps.permissions_boundary == null ||
-      (ps.permissions_boundary.managed_policy_arn != null) !=
-      (ps.permissions_boundary.customer_managed_policy_reference != null)
+      (
+        (try(ps.permissions_boundary.managed_policy_arn, null) != null) !=
+        (try(ps.permissions_boundary.customer_managed_policy_reference, null) != null)
+      )
     ])
     error_message = "When permissions_boundary is set, exactly one of managed_policy_arn or customer_managed_policy_reference must be provided."
   }
