@@ -3,7 +3,7 @@ variable "managed_permission_sets" {
     name              = string
     description       = string
     attached_policies = list(string)
-    session_duration  = optional(string)
+    session_duration  = optional(string, "PT12H")
     permissions_boundary = optional(object({
       managed_policy_arn = optional(string)
       customer_managed_policy_reference = optional(object({
