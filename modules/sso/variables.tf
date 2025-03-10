@@ -1,11 +1,58 @@
 variable "managed_permission_sets" {
-  type        = list(any)
+  type = list(object({
+    name              = string
+    description       = string
+    attached_policies = list(string)
+    session_duration  = optional(string, "PT12H")
+    permissions_boundary = optional(object({
+      managed_policy_arn = optional(string)
+      customer_managed_policy_reference = optional(object({
+        name = string
+        path = optional(string, "/")
+      }))
+    }))
+  }))
   description = "List of the required Permission Sets that contain AWS Managed Policies"
+
+  validation {
+    condition = alltrue([
+      for ps in var.managed_permission_sets :
+      ps.permissions_boundary == null ||
+      (
+        (try(ps.permissions_boundary.managed_policy_arn, null) != null) !=
+        (try(ps.permissions_boundary.customer_managed_policy_reference, null) != null)
+      )
+    ])
+    error_message = "When permissions_boundary is set, exactly one of managed_policy_arn or customer_managed_policy_reference must be provided."
+  }
 }
 
 variable "inline_permission_sets" {
-  type        = list(any)
+  type = list(object({
+    name             = string
+    description      = string
+    inline_policy    = string
+    session_duration = optional(string, "PT12H")
+    permissions_boundary = optional(object({
+      managed_policy_arn = optional(string)
+      customer_managed_policy_reference = optional(object({
+        name = string
+        path = optional(string, "/")
+      }))
+    }))
+  }))
   description = "List of the required Permission Sets that are comprised of inline IAM Policies"
+  validation {
+    condition = alltrue([
+      for ps in var.inline_permission_sets :
+      ps.permissions_boundary == null ||
+      (
+        (try(ps.permissions_boundary.managed_policy_arn, null) != null) !=
+        (try(ps.permissions_boundary.customer_managed_policy_reference, null) != null)
+      )
+    ])
+    error_message = "When permissions_boundary is set, exactly one of managed_policy_arn or customer_managed_policy_reference must be provided."
+  }
 }
 
 variable "sso_groups" {
