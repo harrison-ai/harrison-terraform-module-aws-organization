@@ -20,5 +20,3 @@ This section is optional, however if you have any concerns or questions regardin
 
 ## Notes
 This section is also optional and should include anything else that you would like to discuss in the PR review that is not captured elsewhere.
-
-* See the [data engineering handbook](https://dataengineering.harrisonai.io/pages/source_control.html#anatomy-of-a-pull-request) for more info.
