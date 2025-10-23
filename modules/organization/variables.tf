@@ -9,7 +9,18 @@ variable "enabled_policy_types" {
 }
 
 variable "accounts" {
-  type        = list(any)
+  type = list(object({
+    budget_limit_amount        = number
+    close_on_deletion          = bool
+    email                      = string
+    iam_user_access_to_billing = string
+    name                       = string
+    parent = object({
+      name = string
+      uuid = string
+    })
+    tags = map(string)
+  }))
   default     = []
   description = "List of member accounts to be added to the organization"
 }
