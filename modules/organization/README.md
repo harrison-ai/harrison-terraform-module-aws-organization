@@ -159,17 +159,19 @@ member_accounts = [
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_vanta"></a> [vanta](#module\_vanta) | ../vanta | n/a |
 
 ## Resources
 
@@ -186,17 +188,21 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | `list(any)` | `[]` | no |
+| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of member accounts to be added to the organization | <pre>list(object({<br/>    budget_limit_amount        = number<br/>    close_on_deletion          = bool<br/>    email                      = string<br/>    iam_user_access_to_billing = string<br/>    name                       = string<br/>    parent = object({<br/>      name = string<br/>      uuid = string<br/>    })<br/>    tags = map(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_aws_service_access_principals"></a> [aws\_service\_access\_principals](#input\_aws\_service\_access\_principals) | ist of AWS service principal names for which you want to enable integration with your organization | `list(any)` | n/a | yes |
 | <a name="input_child_org_units"></a> [child\_org\_units](#input\_child\_org\_units) | List of Organizational Units to be created directly under a Top Level Org Unit | `list(any)` | `[]` | no |
+| <a name="input_enable_vanta_integration"></a> [enable\_vanta\_integration](#input\_enable\_vanta\_integration) | Enable Vanta integration. | `bool` | `false` | no |
 | <a name="input_enabled_policy_types"></a> [enabled\_policy\_types](#input\_enabled\_policy\_types) | List of Organizations policy types to enable in the Organization Root | `list(any)` | n/a | yes |
 | <a name="input_service_control_policies"></a> [service\_control\_policies](#input\_service\_control\_policies) | List of Service Control Policies (SCP's) | `list(any)` | `[]` | no |
 | <a name="input_top_level_org_units"></a> [top\_level\_org\_units](#input\_top\_level\_org\_units) | List of Organizational Units to be created directly under the Root OU | `list(any)` | `[]` | no |
+| <a name="input_vanta_account_id"></a> [vanta\_account\_id](#input\_vanta\_account\_id) | Vanta Account ID. Can be retrieved from the portal during the AWS account set up. | `string` | `null` | no |
+| <a name="input_vanta_external_id"></a> [vanta\_external\_id](#input\_vanta\_external\_id) | Vanta External ID. Can be retrieved from the portal during the AWS account set up. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_aws_org_member_accounts"></a> [aws\_org\_member\_accounts](#output\_aws\_org\_member\_accounts) | n/a |
 | <a name="output_member_accounts"></a> [member\_accounts](#output\_member\_accounts) | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
