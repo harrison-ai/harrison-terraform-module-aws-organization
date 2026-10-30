@@ -55,6 +55,7 @@ No modules.
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | 12 digit Account Id of the designated Audit account | `string` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Name of the S3 Bucket that will store CloudTrail logs | `string` | n/a | yes |
 | <a name="input_cloudtrail_name"></a> [cloudtrail\_name](#input\_cloudtrail\_name) | Name of the Org CloudTrail | `string` | n/a | yes |
+| <a name="input_enable_s3_object_logging"></a> [enable\_s3\_object\_logging](#input\_enable\_s3\_object\_logging) | Enable S3 object logging in CloudTrail | `bool` | `true` | no |
 | <a name="input_expiration_days"></a> [expiration\_days](#input\_expiration\_days) | Number of days before CloudTrail logs are expired (delete) | `number` | `2555` | no |
 | <a name="input_project"></a> [project](#input\_project) | Designated project name | `string` | n/a | yes |
 | <a name="input_repo"></a> [repo](#input\_repo) | Name of this current repository | `string` | n/a | yes |

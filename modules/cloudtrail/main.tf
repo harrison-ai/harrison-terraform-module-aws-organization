@@ -108,9 +108,13 @@ resource "aws_cloudtrail" "this" {
   event_selector {
     include_management_events = true
     read_write_type           = "All"
-    data_resource {
-      type   = "AWS::S3::Object"
-      values = ["arn:aws:s3:::"]
+    dynamic "data_resource" {
+      for_each = var.enable_s3_object_logging ? [1] : []
+
+      content {
+        type   = "AWS::S3::Object"
+        values = ["arn:aws:s3:::"]
+      }
     }
   }
 }
