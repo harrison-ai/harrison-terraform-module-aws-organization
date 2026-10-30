@@ -34,3 +34,9 @@ variable "project" {
   type        = string
   description = "Designated project name"
 }
+
+variable "enable_s3_object_logging" {
+  description = "Enable S3 object logging in CloudTrail"
+  default     = true
+  type        = bool
+}

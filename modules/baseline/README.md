@@ -72,12 +72,12 @@ This module leverages the "Enhanced Region Support" feature of the Terraform AWS
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_regions"></a> [allowed\_regions](#input\_allowed\_regions) | n/a | `list(string)` | n/a | yes |
-| <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | n/a | `string` | n/a | yes |
-| <a name="input_budget_limit_amount"></a> [budget\_limit\_amount](#input\_budget\_limit\_amount) | n/a | `number` | n/a | yes |
+| <a name="input_allowed_regions"></a> [allowed\_regions](#input\_allowed\_regions) | A list of enabled AWS regions | `list(string)` | n/a | yes |
+| <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS Account ID | `string` | n/a | yes |
+| <a name="input_budget_limit_amount"></a> [budget\_limit\_amount](#input\_budget\_limit\_amount) | Budget amount for member account | `number` | n/a | yes |
 | <a name="input_central_budget_notification"></a> [central\_budget\_notification](#input\_central\_budget\_notification) | Central or Shared email address for Budget Notifications | `string` | `""` | no |
 | <a name="input_create_s3_account_public_access_block"></a> [create\_s3\_account\_public\_access\_block](#input\_create\_s3\_account\_public\_access\_block) | Create the account level S3 Public Access Block | `bool` | `true` | no |
-| <a name="input_email_address"></a> [email\_address](#input\_email\_address) | n/a | `string` | n/a | yes |
+| <a name="input_email_address"></a> [email\_address](#input\_email\_address) | n/a | `string` | `"Email address associated with account root user"` | no |
 | <a name="input_enable_vanta_integration"></a> [enable\_vanta\_integration](#input\_enable\_vanta\_integration) | Enable Vanta integration. | `bool` | `false` | no |
 | <a name="input_min_iam_password_length"></a> [min\_iam\_password\_length](#input\_min\_iam\_password\_length) | Minimum length of IAM password | `number` | `64` | no |
 | <a name="input_vanta_account_id"></a> [vanta\_account\_id](#input\_vanta\_account\_id) | Vanta Account ID. Can be retrieved from the portal during the AWS account set up. | `string` | `null` | no |
